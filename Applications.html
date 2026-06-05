@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Application Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --p1:#7C3AED;--p2:#A855F7;--b1:#2563EB;--b2:#60A5FA;
+  --pk:#EC4899;--pk2:#F9A8D4;--teal:#0D9488;--teal2:#5EEAD4;
+  --org:#F97316;--grn:#16A34A;--grn2:#BBF7D0;
+  --red:#DC2626;--red2:#FECACA;
+  --bg:#F0F4FF;--surface:#FFFFFF;--surface2:#F5F3FF;
+  --text:#0F172A;--text2:#475569;--text3:#94A3B8;
+  --border:rgba(124,58,237,0.12);--border2:rgba(124,58,237,0.22);
+  --shadow:0 8px 32px rgba(124,58,237,0.10);
+  --r:16px;--r2:20px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Poppins',sans-serif;
+  background:var(--bg);color:var(--text);min-height:100vh;
+  background-image:
+    radial-gradient(ellipse at 15% 0%,rgba(124,58,237,0.09) 0%,transparent 55%),
+    radial-gradient(ellipse at 85% 5%,rgba(37,99,235,0.08) 0%,transparent 50%),
+    radial-gradient(ellipse at 65% 95%,rgba(236,72,153,0.07) 0%,transparent 50%);
+}
+.page{display:none;}.page.active{display:block;}
+
+/* HEADER */
+.site-header{
+  background:linear-gradient(135deg,var(--p1) 0%,#4F46E5 50%,var(--b1) 100%);
+  padding:0 40px;height:64px;
+  display:flex;align-items:center;gap:14px;
+  position:sticky;top:0;z-index:50;
+  box-shadow:0 4px 20px rgba(124,58,237,0.28);
+}
+.logo-mark{
+  width:40px;height:40px;
+  background:rgba(255,255,255,0.18);
+  border:1.5px solid rgba(255,255,255,0.32);
+  border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:19px;font-weight:800;color:#fff;
+  flex-shrink:0;
+}
+.brand-name{font-size:18px;font-weight:700;color:#fff;letter-spacing:-0.01em;}
+.brand-sub{font-size:10px;color:rgba(255,255,255,0.62);letter-spacing:0.1em;text-transform:uppercase;}
+.header-badge{
+  margin-left:auto;
+  background:rgba(255,255,255,0.14);
+  border:1px solid rgba(255,255,255,0.26);
+  color:#fff;font-size:11px;font-weight:600;
+  padding:4px 14px;border-radius:20px;letter-spacing:0.05em;
+}
+
+/* HERO */
+.hero-strip{
+  background:linear-gradient(135deg,var(--p1) 0%,#4F46E5 35%,var(--b1) 75%,#0EA5E9 100%);
+  padding:56px 40px 80px;position:relative;overflow:hidden;
+}
+.hero-strip::before{
+  content:'';position:absolute;right:-80px;top:-80px;
+  width:360px;height:360px;border-radius:50%;
+  background:rgba(255,255,255,0.06);
+}
+.hero-strip::after{
+  content:'';position:absolute;left:30%;bottom:-100px;
+  width:240px;height:240px;border-radius:50%;
+  background:rgba(236,72,153,0.18);
+}
+.hero-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,0.15);
+  border:1px solid rgba(255,255,255,0.28);
+  color:#fff;font-size:11px;font-weight:600;
+  padding:5px 14px 5px 10px;border-radius:30px;
+  margin-bottom:18px;
+}
+.hero-pill .dot{
+  width:7px;height:7px;border-radius:50%;background:#4ADE80;
+  box-shadow:0 0 0 3px rgba(74,222,128,0.3);
+  animation:pulse 1.8s infinite;
+}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 3px rgba(74,222,128,0.3)}50%{box-shadow:0 0 0 6px rgba(74,222,128,0.12)}}
+.hero-strip h1{
+  font-size:36px;font-weight:800;color:#fff;
+  line-height:1.15;max-width:540px;margin-bottom:12px;
+  letter-spacing:-0.02em;
+}
+.hero-strip h1 em{font-style:normal;color:#FDE68A;}
+.hero-strip p{color:rgba(255,255,255,0.7);font-size:14px;font-weight:400;}
+.hero-chips{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;}
+.hero-chip{
+  background:rgba(255,255,255,0.13);border:1px solid rgba(255,255,255,0.22);
+  color:rgba(255,255,255,0.9);font-size:12px;font-weight:500;
+  padding:5px 14px;border-radius:20px;
+}
+
+/* FORM WRAPPER */
+.form-wrapper{max-width:800px;margin:-36px auto 60px;padding:0 20px;position:relative;z-index:2;}
+.form-card{
+  background:var(--surface);
+  border-radius:var(--r2);
+  box-shadow:var(--shadow);
+  border:1px solid var(--border);
+  overflow:hidden;
+}
+.form-section{padding:30px 34px;border-bottom:1px solid #F1F5F9;position:relative;}
+.form-section:last-child{border-bottom:none;}
+.form-section::before{content:'';position:absolute;left:0;top:0;width:4px;height:100%;}
+.form-section.sec-personal::before{background:linear-gradient(180deg,var(--p1),var(--pk));}
+.form-section.sec-position::before{background:linear-gradient(180deg,var(--b1),var(--teal));}
+.form-section.sec-resume::before{background:linear-gradient(180deg,var(--org),var(--grn));}
+
+.section-header{display:flex;align-items:center;gap:12px;margin-bottom:22px;}
+.section-icon{
+  width:36px;height:36px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;
+}
+.sec-personal .section-icon{background:linear-gradient(135deg,#EDE9FE,#FCE7F3);}
+.sec-position .section-icon{background:linear-gradient(135deg,#DBEAFE,#CCFBF1);}
+.sec-resume .section-icon{background:linear-gradient(135deg,#FFEDD5,#DCFCE7);}
+.section-title{font-size:14px;font-weight:700;color:var(--text);}
+.section-sub{font-size:11px;color:var(--text3);font-weight:400;margin-top:1px;}
+
+.row{display:grid;gap:16px;margin-bottom:16px;}
+.row.two{grid-template-columns:1fr 1fr;}
+.row.one{grid-template-columns:1fr;}
+.field{display:flex;flex-direction:column;gap:6px;}
+.field label{font-size:11px;font-weight:600;color:var(--text2);letter-spacing:0.04em;text-transform:uppercase;}
+.field label .req{color:var(--pk);margin-left:2px;}
+
+input[type=text],input[type=email],input[type=tel],select,textarea{
+  font-family:'Poppins',sans-serif;font-size:13px;font-weight:500;color:var(--text);
+  background:#FAFBFF;border:1.5px solid #E2E8F0;border-radius:10px;
+  padding:11px 14px;outline:none;transition:all 0.2s;width:100%;appearance:none;
+}
+input:focus,select:focus,textarea:focus{
+  border-color:var(--p1);background:#fff;
+  box-shadow:0 0 0 4px rgba(124,58,237,0.10);
+}
+input:disabled,select:disabled{
+  background:linear-gradient(135deg,#F5F3FF,#EFF6FF);
+  color:var(--p1);font-weight:600;
+  border-color:rgba(124,58,237,0.2);cursor:not-allowed;
+}
+select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237C3AED' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;padding-right:38px;
+}
+
+.file-upload-area{
+  border:2px dashed rgba(124,58,237,0.22);border-radius:14px;
+  padding:28px 20px;text-align:center;cursor:pointer;
+  transition:all 0.25s;position:relative;
+  background:linear-gradient(135deg,#FAFBFF,#F5F3FF);
+}
+.file-upload-area:hover{
+  border-color:var(--p1);
+  background:linear-gradient(135deg,#F5F3FF,#EFF6FF);
+  transform:translateY(-2px);
+}
+.file-upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.upload-icon{
+  width:48px;height:48px;margin:0 auto 12px;
+  background:linear-gradient(135deg,var(--p1),var(--pk));
+  border-radius:14px;display:flex;align-items:center;justify-content:center;
+}
+.upload-icon svg{width:22px;height:22px;stroke:#fff;}
+.upload-text{font-size:13px;font-weight:600;color:var(--text);}
+.upload-hint{font-size:11px;color:var(--text3);margin-top:4px;}
+.file-chosen{font-size:12px;font-weight:600;color:var(--grn);margin-top:10px;}
+
+.form-cta{
+  padding:26px 34px;
+  background:linear-gradient(135deg,#F5F3FF 0%,#EFF6FF 50%,#FDF2F8 100%);
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  border-top:1px solid var(--border);
+}
+.cta-note{font-size:12px;color:var(--text3);max-width:380px;line-height:1.7;}
+.btn-proceed{
+  font-family:'Poppins',sans-serif;font-size:13px;font-weight:700;color:#fff;
+  background:linear-gradient(135deg,var(--p1),var(--pk));
+  border:none;border-radius:12px;padding:13px 30px;cursor:pointer;
+  display:flex;align-items:center;gap:8px;transition:all 0.2s;
+  white-space:nowrap;box-shadow:0 4px 16px rgba(124,58,237,0.35);
+}
+.btn-proceed:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(124,58,237,0.42);}
+.btn-proceed:active{transform:scale(0.98);}
+
+/* ASSESSMENT */
+#assessPage{min-height:100vh;background:var(--bg);display:none;}
+#assessPage.active{display:block;}
+
+.assess-header{
+  background:linear-gradient(135deg,var(--p1) 0%,var(--b1) 100%);
+  padding:0 40px;height:64px;
+  display:flex;align-items:center;gap:20px;
+  box-shadow:0 4px 20px rgba(124,58,237,0.25);
+  position:sticky;top:0;z-index:50;
+}
+.assess-brand{color:#fff;font-size:15px;font-weight:700;white-space:nowrap;}
+.assess-progress-bar-wrap{flex:1;height:6px;background:rgba(255,255,255,0.2);border-radius:3px;overflow:hidden;}
+.assess-progress-bar{
+  height:100%;
+  background:linear-gradient(90deg,#FDE68A,#FCA5A5,#93C5FD);
+  transition:width 0.5s cubic-bezier(0.34,1.56,0.64,1);
+  border-radius:3px;
+}
+.assess-counter{color:rgba(255,255,255,0.8);font-size:12px;font-weight:600;white-space:nowrap;}
+
+.assess-body{max-width:680px;margin:48px auto 60px;padding:0 20px;}
+.q-slide{display:none;}
+.q-slide.active{display:block;animation:slideIn 0.4s cubic-bezier(0.34,1.2,0.64,1);}
+@keyframes slideIn{
+  from{opacity:0;transform:translateX(40px) scale(0.97);}
+  to{opacity:1;transform:translateX(0) scale(1);}
+}
+
+.q-card{
+  background:var(--surface);border-radius:var(--r2);
+  box-shadow:var(--shadow);border:1px solid var(--border);
+  padding:36px 36px 28px;margin-bottom:20px;position:relative;overflow:hidden;
+}
+.q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.q-slide[data-q="0"] .q-card::before,.q-slide[data-q="1"] .q-card::before,
+.q-slide[data-q="2"] .q-card::before,.q-slide[data-q="8"] .q-card::before
+  {background:linear-gradient(90deg,var(--p1),var(--pk));}
+.q-slide[data-q="3"] .q-card::before,.q-slide[data-q="4"] .q-card::before
+  {background:linear-gradient(90deg,var(--org),#FACC15);}
+.q-slide[data-q="5"] .q-card::before,.q-slide[data-q="6"] .q-card::before,
+.q-slide[data-q="7"] .q-card::before,.q-slide[data-q="9"] .q-card::before
+  {background:linear-gradient(90deg,var(--b1),var(--teal));}
+
+.q-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;}
+.q-category{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:5px 14px;border-radius:20px;}
+.cat-english{background:#EDE9FE;color:var(--p1);}
+.cat-humour{background:#FEF3C7;color:#B45309;}
+.cat-intelligence{background:#DBEAFE;color:var(--b1);}
+
+.q-timer-ring{width:48px;height:48px;position:relative;}
+.q-timer-ring svg{transform:rotate(-90deg);}
+.ring-bg{fill:none;stroke:#E2E8F0;stroke-width:3.5;}
+.ring-fill{fill:none;stroke:var(--p1);stroke-width:3.5;stroke-linecap:round;transition:stroke-dashoffset 1s linear,stroke 0.3s;}
+.q-timer-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--p1);}
+
+.q-text{font-size:20px;font-weight:700;line-height:1.4;color:var(--text);margin-bottom:26px;letter-spacing:-0.01em;}
+
+.options{display:grid;gap:10px;}
+.option-btn{
+  background:#FAFBFF;border:1.5px solid #E2E8F0;border-radius:12px;
+  padding:13px 16px;text-align:left;cursor:pointer;
+  font-family:'Poppins',sans-serif;font-size:13px;font-weight:500;color:var(--text);
+  display:flex;align-items:center;gap:12px;transition:all 0.18s;
+}
+.option-btn:hover:not(:disabled){border-color:var(--p1);background:#F5F3FF;transform:translateX(4px);}
+.option-btn.selected{border-color:var(--p1);background:linear-gradient(135deg,#F5F3FF,#EFF6FF);box-shadow:0 0 0 3px rgba(124,58,237,0.10);}
+.option-btn.correct{border-color:var(--grn);background:#F0FDF4;color:#166534;}
+.option-btn.wrong{border-color:var(--red);background:#FEF2F2;color:var(--red);}
+.option-btn:disabled{cursor:not-allowed;}
+.option-letter{
+  width:28px;height:28px;border-radius:8px;
+  background:#EEF2FF;border:1px solid #C7D2FE;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:var(--p1);flex-shrink:0;transition:all 0.18s;
+}
+.option-btn.selected .option-letter{background:linear-gradient(135deg,var(--p1),var(--pk));border-color:transparent;color:#fff;}
+.option-btn.correct .option-letter{background:var(--grn);border-color:transparent;color:#fff;}
+.option-btn.wrong .option-letter{background:var(--red);border-color:transparent;color:#fff;}
+
+.q-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.q-nav-info{font-size:11px;color:var(--text3);font-weight:500;}
+.btn-next{
+  font-family:'Poppins',sans-serif;font-size:13px;font-weight:700;color:#fff;
+  background:linear-gradient(135deg,var(--p1),var(--b1));
+  border:none;border-radius:12px;padding:12px 26px;cursor:pointer;
+  display:flex;align-items:center;gap:8px;transition:all 0.2s;
+  opacity:0.35;pointer-events:none;
+  box-shadow:0 4px 14px rgba(124,58,237,0.3);
+}
+.btn-next.ready{opacity:1;pointer-events:all;}
+.btn-next.ready:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(124,58,237,0.4);}
+.btn-next:active{transform:scale(0.98);}
+
+/* RESULT */
+#resultPage{min-height:100vh;display:none;background:var(--bg);}
+#resultPage.active{display:flex;align-items:center;justify-content:center;padding:60px 20px;}
+
+.result-card{
+  background:var(--surface);border-radius:var(--r2);
+  box-shadow:0 20px 60px rgba(124,58,237,0.15);
+  border:1px solid var(--border);max-width:520px;width:100%;overflow:hidden;
+}
+.result-hero{
+  background:linear-gradient(135deg,var(--p1) 0%,#4F46E5 40%,var(--b1) 80%,#0EA5E9 100%);
+  padding:44px 32px 40px;text-align:center;position:relative;overflow:hidden;
+}
+.result-hero::after{content:'';position:absolute;right:-40px;bottom:-40px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.07);}
+.result-score-circle{
+  width:120px;height:120px;margin:0 auto 22px;border-radius:50%;
+  background:rgba(255,255,255,0.12);border:3px solid rgba(255,255,255,0.28);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  box-shadow:0 0 0 8px rgba(255,255,255,0.06);
+}
+.score-num{font-size:46px;font-weight:800;color:#fff;line-height:1;letter-spacing:-0.02em;}
+.score-denom{font-size:12px;color:rgba(255,255,255,0.6);font-weight:500;margin-top:2px;}
+.result-hero h2{font-size:22px;font-weight:800;color:#fff;margin-bottom:6px;}
+.result-hero p{color:rgba(255,255,255,0.7);font-size:13px;}
+
+.result-body{padding:28px 32px;}
+.result-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid #F1F5F9;font-size:13px;}
+.result-row:last-child{border-bottom:none;}
+.rl{color:var(--text2);font-weight:500;}.rv{font-weight:700;color:var(--text);}
+.result-tag{display:inline-block;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:700;}
+.result-tag.pass{background:var(--grn2);color:#166534;}
+.result-tag.average{background:#FEF3C7;color:#92400E;}
+.result-tag.fail{background:var(--red2);color:#991B1B;}
+
+.result-footer{
+  background:linear-gradient(135deg,#F5F3FF,#EFF6FF);
+  padding:20px 32px;font-size:12px;color:var(--text3);
+  text-align:center;border-top:1px solid var(--border);
+  line-height:1.7;font-weight:500;
+}
+
+/* OVERLAY */
+.submitting-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(15,23,42,0.75);
+  z-index:99;align-items:center;justify-content:center;
+  flex-direction:column;gap:18px;
+}
+.submitting-overlay.show{display:flex;}
+.spin-ring{
+  width:50px;height:50px;
+  border:3px solid rgba(255,255,255,0.12);
+  border-top-color:#A78BFA;border-right-color:#F472B6;
+  border-radius:50%;animation:spin 0.9s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+.submitting-overlay p{color:#fff;font-size:15px;font-weight:600;}
+
+@media(max-width:620px){
+  .hero-strip{padding:36px 20px 60px;}.hero-strip h1{font-size:24px;}
+  .form-section{padding:20px;}.form-cta{flex-direction:column;align-items:flex-start;}
+  .row.two{grid-template-columns:1fr;}
+  .site-header,.assess-header{padding:0 16px;}
+  .assess-body{padding:0 12px;margin:28px auto 40px;}
+  .q-card{padding:24px 18px 20px;}.q-text{font-size:17px;}
+  .header-badge{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════ FORM PAGE ══════ -->
+<div id="formPage" class="page active">
+  <header class="site-header">
+    <div class="logo-mark">H</div>
+    <div>
+      <div class="brand-name">HirePortal</div>
+      <div class="brand-sub">Careers &amp; Recruitment</div>
+    </div>
+    <div class="header-badge">Now Hiring 2026</div>
+  </header>
+
+  <div class="hero-strip">
+    <div class="hero-pill"><span class="dot"></span>Applications Open</div>
+    <h1>Join Our Team —<br><em>Quick Apply</em> in Minutes</h1>
+    <p>Complete the form below. A short skills assessment follows your application.</p>
+    <div class="hero-chips">
+      <span class="hero-chip">⚡ 5 min to fill</span>
+      <span class="hero-chip">📋 10 Q Assessment</span>
+      <span class="hero-chip">📩 Instant confirmation</span>
+    </div>
+  </div>
+
+  <div class="form-wrapper">
+    <div class="form-card">
+
+      <div class="form-section sec-personal">
+        <div class="section-header">
+          <div class="section-icon">👤</div>
+          <div>
+            <div class="section-title">Personal Information</div>
+            <div class="section-sub">Your basic contact details</div>
+          </div>
+        </div>
+        <div class="row two">
+          <div class="field"><label>First Name <span class="req">*</span></label><input type="text" id="fName" placeholder="John" required></div>
+          <div class="field"><label>Last Name <span class="req">*</span></label><input type="text" id="lName" placeholder="Doe" required></div>
+        </div>
+        <div class="row two">
+          <div class="field"><label>Email Address <span class="req">*</span></label><input type="email" id="email" placeholder="john@example.com" required></div>
+          <div class="field"><label>Phone Number <span class="req">*</span></label><input type="tel" id="phone" placeholder="+91 98765 43210" required></div>
+        </div>
+      </div>
+
+      <div class="form-section sec-position">
+        <div class="section-header">
+          <div class="section-icon">💼</div>
+          <div>
+            <div class="section-title">Position Details</div>
+            <div class="section-sub">Role &amp; professional background</div>
+          </div>
+        </div>
+        <div class="row two">
+          <div class="field"><label>Position Applied For <span class="req">*</span></label><input type="text" id="position" disabled required placeholder="Fetching from URL…"></div>
+          <div class="field">
+            <label>Years of Experience <span class="req">*</span></label>
+            <select id="experience" required>
+              <option value="">Select experience</option>
+              <option>Less than 1 year</option><option>1 – 2 years</option><option>2 – 3 years</option>
+              <option>3 – 4 years</option><option>4 – 5 years</option><option>5 – 6 years</option>
+              <option>6 – 7 years</option><option>7 – 8 years</option><option>8 – 9 years</option>
+              <option>9 – 10 years</option><option>10+ years</option>
+            </select>
+          </div>
+        </div>
+        <div class="row two">
+          <div class="field"><label>Current / Last Company</label><input type="text" id="company" placeholder="Company Name"></div>
+          <div class="field"><label>Current Location <span class="req">*</span></label><input type="text" id="location" placeholder="City, State" required></div>
+        </div>
+        <div class="row two">
+          <div class="field"><label>Expected Salary (Annual)</label><input type="text" id="salary" placeholder="e.g. ₹6,00,000"></div>
+          <div class="field">
+            <label>Notice Period</label>
+            <select id="notice">
+              <option value="">Select</option>
+              <option>Immediately available</option><option>15 days</option><option>30 days</option>
+              <option>45 days</option><option>60 days</option><option>90 days</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section sec-resume">
+        <div class="section-header">
+          <div class="section-icon">📄</div>
+          <div>
+            <div class="section-title">Resume / CV</div>
+            <div class="section-sub">Upload your latest resume</div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Attach Resume <span class="req">*</span> &nbsp;<span style="color:var(--text3);font-weight:400;text-transform:none;">(PDF only · max 5MB)</span></label>
+          <div class="file-upload-area">
+            <input type="file" id="resumeFile" accept=".pdf" required>
+            <div class="upload-icon">
+              <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
+            </div>
+            <div class="upload-text">Click to upload or drag &amp; drop</div>
+            <div class="upload-hint">PDF files only · Maximum 5MB</div>
+            <div class="file-chosen" id="fileChosen"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-cta">
+        <p class="cta-note">After submitting your details you'll complete a 10-question skills assessment covering English, reasoning &amp; aptitude. Takes about 7 minutes.</p>
+        <button class="btn-proceed" id="proceedBtn">
+          Start Assessment
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ ASSESSMENT PAGE ══════ -->
+<div id="assessPage" class="page">
+  <header class="assess-header">
+    <div class="assess-brand">🎯 Skills Assessment</div>
+    <div class="assess-progress-bar-wrap"><div class="assess-progress-bar" id="progressBar" style="width:0%"></div></div>
+    <div class="assess-counter" id="qCounter">1 / 10</div>
+  </header>
+  <div class="assess-body">
+
+    <div class="q-slide active" data-q="0">
+      <div class="q-card">
+        <div class="q-meta"><span class="q-category cat-english">English</span><div class="q-timer-ring"><svg width="48" height="48" viewBox="0 0 48 48"><circle class="ring-bg" cx="24" cy="24" r="19"/><circle class="ring-fill" cx="24" cy="24" r="19" stroke-dasharray="119.4" stroke-dashoffset="0"/></svg><div class="q-timer-num">40</div></div></div>
+        <div class="q-text">Choose the grammatically correct sentence:</div>
+        <div class="options">
+          <button class="option-btn" data-val="A"><span class="option-letter">A</span>She don't know the answer to the question.</button>
+          <button class="option-btn" data-val="B"><span class="option-letter">B</span>She doesn't know the answer to the question.</button>
+          <button class="option-btn" data-val="C"><span class="option-letter">C</span>She not know the answer to the question.</button>
+          <button class="option-btn" data-val="D"><span class="option-letter">D</span>She wasn't knowing the answer to the question.</button>
+        </div>
+      </div>
+      <div class="q-nav"><div class="q-nav-info">Select an option to continue</div><button class="btn-next" id="next0">Next →</button></div>
+    </div>
+
+    <div class="q-slide" data-q="1">
+      <div class="q-card">
+        <div class="q-meta"><span class="q-category cat-english">English</span><div class="q-timer-ring"><svg width="48" height="48" viewBox="0 0 48 48"><circle class="ring-bg" cx="24" cy="24" r="19"/><circle class="ring-fill" cx="24" cy="24" r="19" stroke-dasharray="119.4" stroke-dashoffset="0"/></svg><div class="q-timer-num">40</div></div></div>
+        <div class="q-text">Which word is the antonym of "Benevolent"?</div>
+        <div class="options">
+          <button class="option-btn" data-val="A"><span class="option-letter">A</span>Generous</button>
+          <button class="option-btn" data-val="B"><span class="option-letter">B</span>Kind</button>
+          <button class="option-btn" data-val="C"><span class="option-letter">C</span>Malevolent</button>
+          <button class="option-btn" data-val="D"><span class="option-letter">D</span>Cordial</button>
+        </div>
+      </div>
+      <div class="q-nav"><div class="q-nav-info">Select an option to continue</div><button class="btn-next" id="next1">Next →</button></div>
+    </div>
+
+    <div class="q-slide" data-q="2">
+      <div class="q-card">
+        <div class="q-meta"><span class="q-category cat-english">English</span><div class="q-timer-ring"><svg width="48" height="48" viewBox="0 0 48 48"><circle class="ring-bg" cx="24" cy="24" r="19"/><circle class="ring-fill" cx="24" cy="24" r="19" stroke-dasharray="119.4" stroke-dashoffset="0"/></svg><div class="q-timer-num">40</div></div></div>
+        <div class="q-text">Fill in the blank: "Neither the manager nor the employees ___ aware of the change."</div>
+        <div class="options">
+          <button class="option-btn" data-val="A"><span class="option-letter">A</span>was</button>
+          <button class="option-btn" data-val="B"><span class="option-letter">B</span>were</button>
+          <button class="option-btn" data-val="C"><span class="option-letter">C</span>is</button>
+          <button class="option-btn" data-val="D"><span class="option-letter">D</span>are being</button>
+        </div>
+      </div>
+      <div class="q-nav"><div class="q-nav-info">Select an option to continue</div><button class="btn-next" id="next2">Next →</button></div>
+    </div>
+
+    <div class="q-slide" data-q="3">
+      <div class="q-card">
+        <div class="q-meta"><span class="q-category cat-humour">Humour Check</span><div class="q-timer-ring"><svg width="48" height="48" viewBox="0 0 48 48"><circle class="ring-bg" cx="24" cy="24" r="19"/><circle class="ring-fill" cx="24" cy="24" r="19" stroke-dasharray="119.4" stroke-dashoffset="0"/></svg><div class="q-timer-num">40</div></div></div>
+        <div class="q-text">Why did the scarecrow win an award?</div>
+        <div class="options">
+          <button class="option-btn" data-val="A"><span class="option-letter">A</span>Because he was outstanding in his field.</button>
+          <button class="option-btn" data-val="B"><span class="option-letter">B</span>Because he worked day and night.</button>
+          <button class="option-btn" data-val="C"><span class="option-letter">C</span>Because he scared the most crows.</button>
+          <button class="option-btn" data-val="D"><span class="option-letter">D</span>Because the farmer liked him.</button>
+        </div>
+      </div>
+      <div class="q-nav"><div class="q-nav-info">Select an option to continue</div><button class="btn-next" id="next3">Next →</button></div>
+    </div>
+
+    <div class="q-slide" data-q="4">
+      <div class="q-card">
+        <div class="q-meta"><span class="q-category cat-humour">Humour Check</span><div class="q-timer-ring"><svg width="48" height="48" viewBox="0 0 48 48"><circle class="ring-bg" cx="24" cy="24" r="19"/><circle class="ring-fill" cx="24" cy="24" r="19" stroke-dasharray="119.4" stroke-dashoffset="0"/></svg><div class="q-timer-num">40</div></div></div>
+        <div class="q-text">A colleague always arrives 2 minutes late. On a day with no meetings, they arrive on time. What is the most likely reason?</div>
+        <div class="options">
+          <button class="option-btn" data-val="A"><span class="option-letter">A</span>They finally fixed their alarm clock.</button>
+          <button class="option-btn" data-val="B"><span class="option-letter">B</span>They had an early breakfast.</button>
+          <button class="option-btn" data-val="C"><span class="option-letter">C</span>There was something important they wanted to do before others arrived.</button>
+          <button class="option-btn" data-val="D"><span class="option-letter">D</span>They took a different route.</button>
+        </div>
+      </div>
+      <div class="q-nav"><div class="q-nav-info">Select an option to continue</div><button class="btn-next" id="next4">Next →</button></div>
+    </div>
+
+    <div class="q-slide" data-q="5">
+      <div class="q-card">
+        <div class="q-meta"><span class="q-category cat-intelligence">Intelligence</span><div class="q-timer-ring"><svg width="48" height="48" viewBox="0 0 48 48"><circle class="ring-bg" cx="24" cy="24" r="19"/><circle class="ring-fill" cx="24" cy="24" r="19" stroke-dasharray="119.4" stroke-dashoffset="0"/></svg><div class="q-timer-num">40</div></div></div>
+        <div class="q-text">What comes next in the series: 2, 6, 12, 20, 30, ___?</div>
+        <div class="options">
+          <button class="option-btn" data-val="A"><span class="option-letter">A</span>40</button>
+          <button class="option-btn" data-val="B"><span class="option-letter">B</span>42</button>
+          <button class="option-btn" data-val="C"><span class="option-letter">C</span>36</button>
+          <button class="option-btn" data-val="D"><span class="option-letter">D</span>44</button>
+        </div>
+      </div>
+      <div class="q-nav"><div class="q-nav-info">Select an option to continue</div><button class="btn-next" id="next5">Next →</button></div>
+    </div>
+
+    <div class="q-slide" data-q="6">
+      <div class="q-card">
+        <div class="q-meta"><span class="q-category cat-intelligence">Intelligence</span><div class="q-timer-ring"><svg width="48" height="48" viewBox="0 0 48 48"><circle class="ring-bg" cx="24" cy="24" r="19"/><circle class="ring-fill" cx="24" cy="24" r="19" stroke-dasharray="119.4" stroke-dashoffset="0"/></svg><div class="q-timer-num">40</div></div></div>
+        <div class="q-text">If all Bloops are Razzles and all Razzles are Lazzles, then:</div>
+        <div class="options">
+          <button class="option-btn" data-val="A"><span class="option-letter">A</span>All Bloops are definitely Lazzles.</button>
+          <button class="option-btn" data-val="B"><span class="option-letter">B</span>All Lazzles are definitely Bloops.</button>
+          <button class="option-btn" data-val="C"><span class="option-letter">C</span>Some Lazzles are not Razzles.</button>
+          <button class="option-btn" data-val="D"><span class="option-letter">D</span>No Bloops are Lazzles.</button>
+        </div>
+      </div>
+      <div class="q-nav"><div class="q-nav-info">Select an option to continue</div><button class="btn-next" id="next6">Next →</button></div>
+    </div>
+
+    <div class="q-slide" data-q="7">
+      <div class="q-card">
+        <div class="q-meta"><span class="q-category cat-intelligence">Intelligence</span><div class="q-timer-ring"><svg width="48" height="48" viewBox="0 0 48 48"><circle class="ring-bg" cx="24" cy="24" r="19"/><circle class="ring-fill" cx="24" cy="24" r="19" stroke-dasharray="119.4" stroke-dashoffset="0"/></svg><div class="q-timer-num">40</div></div></div>
+        <div class="q-text">A clock shows 3:15. What is the angle between the hour and minute hands?</div>
+        <div class="options">
+          <button class="option-btn" data-val="A"><span class="option-letter">A</span>0°</button>
+          <button class="option-btn" data-val="B"><span class="option-letter">B</span>7.5°</button>
+          <button class="option-btn" data-val="C"><span class="option-letter">C</span>15°</button>
+          <button class="option-btn" data-val="D"><span class="option-letter">D</span>30°</button>
+        </div>
+      </div>
+      <div class="q-nav"><div class="q-nav-info">Select an option to continue</div><button class="btn-next" id="next7">Next →</button></div>
+    </div>
+
+    <div class="q-slide" data-q="8">
+      <div class="q-card">
+        <div class="q-meta"><span class="q-category cat-english">English</span><div class="q-timer-ring"><svg width="48" height="48" viewBox="0 0 48 48"><circle class="ring-bg" cx="24" cy="24" r="19"/><circle class="ring-fill" cx="24" cy="24" r="19" stroke-dasharray="119.4" stroke-dashoffset="0"/></svg><div class="q-timer-num">40</div></div></div>
+        <div class="q-text">Choose the correctly punctuated sentence:</div>
+        <div class="options">
+          <button class="option-btn" data-val="A"><span class="option-letter">A</span>Its a lovely day, isn't it?</button>
+          <button class="option-btn" data-val="B"><span class="option-letter">B</span>It's a lovely day, isn't it?</button>
+          <button class="option-btn" data-val="C"><span class="option-letter">C</span>Its' a lovely day isnt it?</button>
+          <button class="option-btn" data-val="D"><span class="option-letter">D</span>It's a lovely day isnt' it?</button>
+        </div>
+      </div>
+      <div class="q-nav"><div class="q-nav-info">Select an option to continue</div><button class="btn-next" id="next8">Next →</button></div>
+    </div>
+
+    <div class="q-slide" data-q="9">
+      <div class="q-card">
+        <div class="q-meta"><span class="q-category cat-intelligence">Intelligence</span><div class="q-timer-ring"><svg width="48" height="48" viewBox="0 0 48 48"><circle class="ring-bg" cx="24" cy="24" r="19"/><circle class="ring-fill" cx="24" cy="24" r="19" stroke-dasharray="119.4" stroke-dashoffset="0"/></svg><div class="q-timer-num">40</div></div></div>
+        <div class="q-text">If you rearrange the letters "CIFAIPC", you get the name of:</div>
+        <div class="options">
+          <button class="option-btn" data-val="A"><span class="option-letter">A</span>A country</button>
+          <button class="option-btn" data-val="B"><span class="option-letter">B</span>An ocean</button>
+          <button class="option-btn" data-val="C"><span class="option-letter">C</span>A city</button>
+          <button class="option-btn" data-val="D"><span class="option-letter">D</span>A mountain</button>
+        </div>
+      </div>
+      <div class="q-nav"><div class="q-nav-info">Last question — make it count!</div><button class="btn-next" id="next9">Submit Assessment ✓</button></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════ RESULT PAGE ══════ -->
+<div id="resultPage" class="page">
+  <div class="result-card">
+    <div class="result-hero">
+      <div class="result-score-circle">
+        <div class="score-num" id="scoreNum">–</div>
+        <div class="score-denom">out of 10</div>
+      </div>
+      <h2 id="resultTitle">Assessment Complete</h2>
+      <p id="resultSubtitle">Thank you for completing the assessment.</p>
+    </div>
+    <div class="result-body">
+      <div class="result-row"><span class="rl">Applicant Name</span><span class="rv" id="rName">–</span></div>
+      <div class="result-row"><span class="rl">Position Applied</span><span class="rv" id="rPosition">–</span></div>
+      <div class="result-row"><span class="rl">Correct Answers</span><span class="rv" id="rScore">–</span></div>
+      <div class="result-row"><span class="rl">Result Status</span><span id="rStatus">–</span></div>
+    </div>
+    <div class="result-footer">Your application &amp; assessment results have been sent to our HR team.<br>We'll reach out via email with next steps shortly.</div>
+  </div>
+</div>
+
+<div class="submitting-overlay" id="submitOverlay">
+  <div class="spin-ring"></div>
+  <p>Submitting your application…</p>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════
+   CONFIGURATION — paste your Power Automate URL
+═══════════════════════════════════════════════ */
+const POWER_AUTOMATE_URL = 'https://2ee217396b6fe0ffb476c1e33c828f.d4.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/0f11e5f7fe134556b44406ec28a0d281/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=HCyrxQVO983mbwrAvi5ok_x6UX0fhJ0zVmfpidhW93M';
+
+/* ═══════════════════════════════════════════════
+   ASSESSMENT CONFIG
+═══════════════════════════════════════════════ */
+const CORRECT = ['B','C','B','A','C','B','A','B','B','B'];
+const Q_TEXT = [
+  "Choose the grammatically correct sentence",
+  "Which word is the antonym of 'Benevolent'?",
+  "Fill in the blank: 'Neither the manager nor the employees ___ aware of the change.'",
+  "Why did the scarecrow win an award?",
+  "A colleague always arrives exactly 2 minutes late. On a day with no meetings, they arrive on time. Most likely reason?",
+  "What comes next in the series: 2, 6, 12, 20, 30, ___?",
+  "If all Bloops are Razzles and all Razzles are Lazzles, then:",
+  "A clock shows 3:15. What is the angle between the hour and minute hands?",
+  "Choose the correctly punctuated sentence",
+  "If you rearrange the letters 'CIFAIPC', you get the name of:"
+];
+
+/* ═══════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════ */
+let formData     = {};
+let resumeBase64 = '';          // ← holds encoded PDF
+let answers      = new Array(10).fill(null);
+let currentQ     = 0;
+let timerInterval = null;
+let timerLeft    = 40;
+const CIRC       = 119.4;
+
+/* ═══════════════════════════════════════════════
+   AUTO-FILL POSITION FROM URL
+   Usage: index.html?position=IT%20Executive
+═══════════════════════════════════════════════ */
+(function () {
+  const p = new URLSearchParams(window.location.search).get('position');
+  document.getElementById('position').value = p ? decodeURIComponent(p) : 'Not specified';
+})();
+
+/* ═══════════════════════════════════════════════
+   RESUME FILE HANDLER — validate + encode Base64
+═══════════════════════════════════════════════ */
+document.getElementById('resumeFile').addEventListener('change', function () {
+  const file = this.files[0];
+  const el   = document.getElementById('fileChosen');
+  resumeBase64 = ''; // reset
+
+  if (!file) return;
+
+  if (file.type !== 'application/pdf') {
+    el.textContent = '⚠ PDF files only.';
+    el.style.color = 'var(--red)';
+    this.value = '';
+    return;
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    el.textContent = '⚠ File exceeds 5 MB limit.';
+    el.style.color = 'var(--red)';
+    this.value = '';
+    return;
+  }
+
+  // Show encoding spinner in label
+  el.textContent = '⏳ Reading file…';
+  el.style.color = 'var(--text3)';
+
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    // Strip the "data:application/pdf;base64," prefix — keep only the Base64 string
+    resumeBase64 = e.target.result.split(',')[1];
+    el.textContent = '✅ ' + file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+    el.style.color  = 'var(--grn)';
+  };
+  reader.onerror = function () {
+    el.textContent = '❌ Could not read file. Try again.';
+    el.style.color  = 'var(--red)';
+  };
+  reader.readAsDataURL(file);
+});
+
+/* ═══════════════════════════════════════════════
+   PROCEED BUTTON — validate form → go to assessment
+═══════════════════════════════════════════════ */
+document.getElementById('proceedBtn').addEventListener('click', function () {
+  const v = id => document.getElementById(id).value.trim();
+
+  if (!v('fName') || !v('lName'))      { alert('Please enter your full name.');           return; }
+  if (!v('email') || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v('email')))
+                                        { alert('Please enter a valid email address.');    return; }
+  if (!v('phone'))                      { alert('Please enter your phone number.');        return; }
+  if (!document.getElementById('experience').value) { alert('Please select your experience level.'); return; }
+  if (!v('location'))                   { alert('Please enter your current location.');    return; }
+  if (!document.getElementById('resumeFile').files[0]) { alert('Please attach your resume (PDF).'); return; }
+  if (!resumeBase64)                    { alert('Resume is still loading. Please wait a moment and try again.'); return; }
+
+  const file = document.getElementById('resumeFile').files[0];
+
+  formData = {
+    firstName:      v('fName'),
+    lastName:       v('lName'),
+    fullName:       v('fName') + ' ' + v('lName'),
+    email:          v('email'),
+    phone:          v('phone'),
+    position:       document.getElementById('position').value,
+    experience:     document.getElementById('experience').value,
+    company:        v('company'),
+    location:       v('location'),
+    salary:         v('salary'),
+    notice:         document.getElementById('notice').value,
+    resumeFileName: file.name,
+    resumeFileSize: (file.size / 1024).toFixed(1) + ' KB',
+    resumeBase64:   resumeBase64,           // ← Base64 encoded PDF
+    resumeMimeType: 'application/pdf'
+  };
+
+  showPage('assessPage');
+  startQuestion(0);
+});
+
+/* ═══════════════════════════════════════════════
+   PAGE SWITCHER
+═══════════════════════════════════════════════ */
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+/* ═══════════════════════════════════════════════
+   ASSESSMENT ENGINE
+═══════════════════════════════════════════════ */
+function startQuestion(idx) {
+  currentQ  = idx;
+  timerLeft = 40;
+
+  document.getElementById('progressBar').style.width = (idx / 10 * 100) + '%';
+  document.getElementById('qCounter').textContent    = (idx + 1) + ' / 10';
+
+  document.querySelectorAll('.q-slide').forEach(s => s.classList.remove('active'));
+  const slide = document.querySelectorAll('.q-slide')[idx];
+  slide.classList.add('active');
+  slide.querySelectorAll('.option-btn').forEach(b => {
+    b.classList.remove('selected', 'correct', 'wrong');
+    b.disabled = false;
+  });
+
+  const nb = document.getElementById('next' + idx);
+  nb.classList.remove('ready');
+
+  clearInterval(timerInterval);
+  updateTimerRing(idx, 40);
+
+  timerInterval = setInterval(() => {
+    timerLeft--;
+    updateTimerRing(idx, timerLeft);
+    if (timerLeft <= 0) { clearInterval(timerInterval); autoAdvance(idx); }
+  }, 1000);
+
+  slide.querySelectorAll('.option-btn').forEach(b => { b.onclick = () => handleOptionClick(idx, b); });
+  nb.onclick = () => handleNext(idx);
+}
+
+function updateTimerRing(idx, rem) {
+  const slide = document.querySelectorAll('.q-slide')[idx];
+  const ring  = slide.querySelector('.ring-fill');
+  const num   = slide.querySelector('.q-timer-num');
+  ring.style.strokeDashoffset = CIRC * (1 - rem / 40);
+  num.textContent = rem;
+  const c = rem <= 10 ? '#DC2626' : rem <= 20 ? '#F97316' : 'var(--p1)';
+  ring.style.stroke = c;
+  num.style.color   = c;
+}
+
+function handleOptionClick(idx, btn) {
+  document.querySelectorAll('.q-slide')[idx]
+    .querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  answers[idx] = btn.dataset.val;
+  document.getElementById('next' + idx).classList.add('ready');
+}
+
+function autoAdvance(idx) {
+  document.querySelectorAll('.q-slide')[idx]
+    .querySelectorAll('.option-btn').forEach(b => b.disabled = true);
+  setTimeout(() => handleNext(idx), 600);
+}
+
+function handleNext(idx) {
+  clearInterval(timerInterval);
+  const slide = document.querySelectorAll('.q-slide')[idx];
+  const sel   = answers[idx];
+  if (sel) {
+    slide.querySelectorAll('.option-btn').forEach(b => {
+      if (b.dataset.val === CORRECT[idx])                       b.classList.add('correct');
+      else if (b.dataset.val === sel && sel !== CORRECT[idx])   b.classList.add('wrong');
+      b.disabled = true;
+    });
+  }
+  setTimeout(() => { idx < 9 ? startQuestion(idx + 1) : finishAssessment(); }, 750);
+}
+
+function finishAssessment() {
+  document.getElementById('progressBar').style.width = '100%';
+  let correct = 0;
+  answers.forEach((a, i) => { if (a === CORRECT[i]) correct++; });
+  submitApplication(correct);
+}
+
+/* ═══════════════════════════════════════════════
+   SUBMISSION — sends full payload incl. Base64 PDF
+═══════════════════════════════════════════════ */
+async function submitApplication(correct) {
+  document.getElementById('submitOverlay').classList.add('show');
+
+  // Build Q&A breakdown
+  const qa = {};
+  answers.forEach((a, i) => {
+    qa['Q' + (i + 1)] = {
+      question:  Q_TEXT[i],
+      selected:  a || 'Not answered',
+      correct:   CORRECT[i],
+      isCorrect: a === CORRECT[i]
+    };
+  });
+
+  const payload = {
+    applicant: formData,           // includes resumeBase64 + resumeFileName
+    assessment: {
+      responses:      qa,
+      totalScore:     correct + ' out of 10',
+      correctAnswers: correct,
+      totalQuestions: 10,
+      percent:        Math.round(correct / 10 * 100) + '%'
+    },
+    submittedAt: new Date().toISOString()
+  };
+
+  try {
+    const res = await fetch(POWER_AUTOMATE_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(payload)
+      // NOTE: remove mode:'no-cors' so you get proper CORS response from Power Automate
+    });
+    if (!res.ok) console.warn('PA responded with status:', res.status);
+  } catch (e) {
+    // no-cors or network error — submission still fires, result shown anyway
+    console.warn('Submission network note:', e.message);
+  }
+
+  showResult(correct);
+  document.getElementById('submitOverlay').classList.remove('show');
+}
+
+/* ═══════════════════════════════════════════════
+   RESULT DISPLAY
+═══════════════════════════════════════════════ */
+function showResult(correct) {
+  document.getElementById('scoreNum').textContent    = correct;
+  document.getElementById('rName').textContent       = formData.fullName;
+  document.getElementById('rPosition').textContent   = formData.position || 'N/A';
+  document.getElementById('rScore').textContent      = correct + ' correct out of 10';
+
+  const pct = correct / 10;
+  let sl, sc, t, s;
+  if (pct >= 0.7) {
+    sl = '🎉 Pass';              sc = 'pass';
+    t  = 'Outstanding Performance!';
+    s  = 'Your results have been submitted. Our team will be in touch soon.';
+  } else if (pct >= 0.4) {
+    sl = '📊 Average';           sc = 'average';
+    t  = 'Assessment Completed';
+    s  = 'Thank you for your time. Our team will review your application carefully.';
+  } else {
+    sl = '📝 Needs Improvement'; sc = 'fail';
+    t  = 'Assessment Completed';
+    s  = 'Thank you for applying. We review all submissions carefully.';
+  }
+
+  document.getElementById('rStatus').innerHTML      = `<span class="result-tag ${sc}">${sl}</span>`;
+  document.getElementById('resultTitle').textContent = t;
+  document.getElementById('resultSubtitle').textContent = s;
+  showPage('resultPage');
+}
+</script>
+</body>
+</html>
