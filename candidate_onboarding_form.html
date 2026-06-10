@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Candidate Onboarding Form</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #1a3c5e;
+    --primary-light: #2a5f96;
+    --accent: #e8a020;
+    --accent-light: #fef3e2;
+    --bg: #f4f7fb;
+    --surface: #ffffff;
+    --surface2: #f9fafc;
+    --border: #dce4ef;
+    --text: #1a2535;
+    --text-muted: #6b7a95;
+    --success: #1a8c5b;
+    --error: #c0392b;
+    --radius: 12px;
+    --shadow: 0 4px 24px rgba(26,60,94,0.08);
+    --shadow-lg: 0 8px 48px rgba(26,60,94,0.13);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0;
+    background-image: radial-gradient(circle at 10% 20%, rgba(26,60,94,0.05) 0%, transparent 50%),
+                      radial-gradient(circle at 90% 80%, rgba(232,160,32,0.06) 0%, transparent 50%);
+  }
+
+  /* Header */
+  .page-header {
+    background: var(--primary);
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 2px 16px rgba(26,60,94,0.18);
+  }
+  .page-header .logo-mark {
+    width: 44px; height: 44px;
+    background: var(--accent);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; color: #fff; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .page-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; color: #fff; font-weight: 600; letter-spacing: 0.3px;
+  }
+  .page-header p {
+    font-size: 13px; color: rgba(255,255,255,0.65); margin-top: 2px;
+  }
+
+  /* Notice Banner */
+  .notice-banner {
+    background: linear-gradient(135deg, #fff8ec, #fef3e2);
+    border-left: 4px solid var(--accent);
+    padding: 14px 40px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13.5px;
+    color: #7a4d10;
+    font-weight: 500;
+  }
+  .notice-banner .notice-icon {
+    font-size: 18px; flex-shrink: 0;
+  }
+
+  /* Main Layout */
+  .main-wrapper {
+    max-width: 860px;
+    margin: 36px auto 60px;
+    padding: 0 20px;
+  }
+
+  /* Progress Stepper */
+  .stepper {
+    display: flex;
+    align-items: center;
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 24px 32px;
+    margin-bottom: 28px;
+    box-shadow: var(--shadow);
+    overflow-x: auto;
+    gap: 0;
+  }
+  .step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    position: relative;
+    min-width: 80px;
+  }
+  .step-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: calc(50% + 20px);
+    right: calc(-50% + 20px);
+    height: 2px;
+    background: var(--border);
+    transition: background 0.4s;
+    z-index: 0;
+  }
+  .step-item.completed:not(:last-child)::after {
+    background: var(--accent);
+  }
+  .step-circle {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 600; color: var(--text-muted);
+    transition: all 0.35s ease;
+    position: relative; z-index: 1;
+  }
+  .step-item.active .step-circle {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+    box-shadow: 0 0 0 4px rgba(26,60,94,0.15);
+  }
+  .step-item.completed .step-circle {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+  .step-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-top: 8px;
+    text-align: center;
+    white-space: nowrap;
+    transition: color 0.3s;
+  }
+  .step-item.active .step-label { color: var(--primary); font-weight: 600; }
+  .step-item.completed .step-label { color: var(--accent); }
+
+  /* Form Card */
+  .form-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+  }
+  .form-card-header {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    padding: 24px 36px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .form-card-header .step-icon {
+    width: 48px; height: 48px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .form-card-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; color: #fff; font-weight: 600;
+  }
+  .form-card-header p {
+    font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 3px;
+  }
+
+  .form-body { padding: 36px; }
+
+  /* Section Title */
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 28px 0 20px;
+  }
+  .section-divider:first-child { margin-top: 0; }
+  .section-divider h3 {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--primary);
+    white-space: nowrap;
+  }
+  .section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Grid */
+  .form-grid { display: grid; gap: 20px; }
+  .col-2 { grid-template-columns: 1fr 1fr; }
+  .col-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .col-1 { grid-template-columns: 1fr; }
+  @media(max-width:600px) {
+    .col-2, .col-3 { grid-template-columns: 1fr; }
+    .form-body { padding: 20px; }
+    .page-header { padding: 16px 20px; }
+    .stepper { padding: 20px 16px; }
+  }
+
+  /* Form Fields */
+  .field-group { display: flex; flex-direction: column; gap: 6px; }
+  .field-group label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+  .field-group label .required { color: var(--error); margin-left: 2px; }
+
+  .field-group input,
+  .field-group select,
+  .field-group textarea {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14.5px;
+    color: var(--text);
+    background: var(--surface2);
+    transition: all 0.25s;
+    outline: none;
+    appearance: none;
+  }
+  .field-group input:focus,
+  .field-group select:focus,
+  .field-group textarea:focus {
+    border-color: var(--primary);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(26,60,94,0.08);
+  }
+  .field-group input.error,
+  .field-group select.error {
+    border-color: var(--error);
+    background: #fff8f8;
+  }
+  .field-error { font-size: 12px; color: var(--error); display: none; }
+  .field-error.visible { display: block; }
+
+  .field-group select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M6 8L0 0h12z' fill='%236b7a95'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+    cursor: pointer;
+  }
+  .field-group textarea { resize: vertical; min-height: 80px; }
+
+  /* File Upload */
+  .upload-zone {
+    border: 2px dashed var(--border);
+    border-radius: 10px;
+    padding: 20px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s;
+    background: var(--surface2);
+    position: relative;
+  }
+  .upload-zone:hover {
+    border-color: var(--primary-light);
+    background: #f0f5fb;
+  }
+  .upload-zone.has-file {
+    border-color: var(--success);
+    background: #f0faf5;
+  }
+  .upload-zone input[type="file"] {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    opacity: 0; cursor: pointer; border: none; padding: 0; background: none;
+  }
+  .upload-icon { font-size: 26px; margin-bottom: 8px; }
+  .upload-label {
+    font-size: 13px; font-weight: 600; color: var(--primary);
+  }
+  .upload-hint {
+    font-size: 11.5px; color: var(--text-muted); margin-top: 4px;
+  }
+  .upload-filename {
+    font-size: 12.5px; color: var(--success); margin-top: 6px;
+    font-weight: 500; display: none;
+  }
+  .upload-zone.has-file .upload-filename { display: block; }
+  .upload-zone.has-file .upload-icon { display: none; }
+  .upload-zone.has-file .upload-label { color: var(--success); }
+
+  .upload-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media(max-width:500px) { .upload-grid { grid-template-columns: 1fr; } }
+  .upload-item-label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .upload-item-label .required { color: var(--error); }
+
+  /* Navigation */
+  .form-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 36px;
+    border-top: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    border: none;
+    text-decoration: none;
+  }
+  .btn-primary {
+    background: var(--primary);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(26,60,94,0.25);
+  }
+  .btn-primary:hover {
+    background: var(--primary-light);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(26,60,94,0.3);
+  }
+  .btn-secondary {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1.5px solid var(--border);
+  }
+  .btn-secondary:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: rgba(26,60,94,0.04);
+  }
+  .btn-submit {
+    background: linear-gradient(135deg, var(--accent), #d48a10);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(232,160,32,0.3);
+  }
+  .btn-submit:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(232,160,32,0.4);
+  }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+
+  /* Step Progress Info */
+  .step-counter {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  /* Steps visibility */
+  .form-step { display: none; }
+  .form-step.active { display: block; }
+
+  /* Success State */
+  .success-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    padding: 60px 40px;
+    text-align: center;
+    display: none;
+  }
+  .success-card.active { display: block; }
+  .success-icon {
+    width: 80px; height: 80px;
+    background: linear-gradient(135deg, #1a8c5b, #27ae60);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px;
+    margin: 0 auto 24px;
+    box-shadow: 0 8px 24px rgba(26,140,91,0.25);
+  }
+  .success-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px; color: var(--primary); margin-bottom: 12px;
+  }
+  .success-card p { font-size: 15px; color: var(--text-muted); max-width: 420px; margin: 0 auto; }
+  .ref-id {
+    display: inline-block;
+    margin-top: 20px;
+    background: var(--accent-light);
+    border: 1px solid #f0d090;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #7a4d10;
+  }
+
+  /* Spinner */
+  .spinner {
+    display: inline-block;
+    width: 18px; height: 18px;
+    border: 2.5px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: none;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    top: 24px; right: 24px;
+    background: var(--error);
+    color: #fff;
+    padding: 14px 22px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    transform: translateX(120%);
+    transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+    z-index: 9999;
+    max-width: 340px;
+  }
+  .toast.show { transform: translateX(0); }
+  .toast.success { background: var(--success); }
+
+  /* Checkbox group */
+  .checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface2);
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .checkbox-row:hover { border-color: var(--primary-light); }
+  .checkbox-row input[type="radio"] { accent-color: var(--primary); }
+  .checkbox-row span { font-size: 14px; }
+
+  .radio-group { display: flex; flex-direction: column; gap: 8px; }
+
+  /* App ID banner */
+  .app-id-box {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--accent-light);
+    border: 1px solid #f0d090;
+    border-radius: 10px;
+    padding: 14px 20px;
+    margin-bottom: 24px;
+  }
+  .app-id-box .app-id-icon { font-size: 22px; }
+  .app-id-box .app-id-text { font-size: 12px; color: #7a4d10; font-weight: 500; }
+  .app-id-box .app-id-value { font-size: 16px; font-weight: 700; color: var(--primary); font-family: monospace; }
+
+  /* Summary table in review step */
+  .review-section { margin-bottom: 24px; }
+  .review-section h3 {
+    font-size: 13px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.8px; color: var(--primary);
+    padding-bottom: 10px; border-bottom: 1.5px solid var(--border);
+    margin-bottom: 14px;
+  }
+  .review-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px;
+  }
+  .review-row { display: flex; flex-direction: column; gap: 2px; }
+  .review-row .r-label { font-size: 11.5px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; }
+  .review-row .r-value { font-size: 14px; font-weight: 500; color: var(--text); }
+  .file-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: #eef4fb; border: 1px solid #c8d9ee;
+    border-radius: 6px; padding: 4px 10px;
+    font-size: 12.5px; color: var(--primary); font-weight: 500;
+    margin: 3px 4px 3px 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="page-header">
+  <div class="logo-mark">H</div>
+  <div>
+    <h1>HR Onboarding Portal</h1>
+    <p>Secure Employee Information Collection</p>
+  </div>
+</header>
+
+<!-- Notice -->
+<div class="notice-banner">
+  <span class="notice-icon">🔒</span>
+  <span><strong>Please do not refresh this page.</strong> Your progress will be lost. We will collect all your details securely and submit them once all steps are completed.</span>
+</div>
+
+<div class="main-wrapper">
+
+  <!-- Stepper -->
+  <div class="stepper" id="stepper">
+    <div class="step-item active" data-step="1">
+      <div class="step-circle">1</div>
+      <div class="step-label">Personal</div>
+    </div>
+    <div class="step-item" data-step="2">
+      <div class="step-circle">2</div>
+      <div class="step-label">Contact</div>
+    </div>
+    <div class="step-item" data-step="3">
+      <div class="step-circle">3</div>
+      <div class="step-label">Identity</div>
+    </div>
+    <div class="step-item" data-step="4">
+      <div class="step-circle">4</div>
+      <div class="step-label">Banking</div>
+    </div>
+    <div class="step-item" data-step="5">
+      <div class="step-circle">5</div>
+      <div class="step-label">Education</div>
+    </div>
+    <div class="step-item" data-step="6">
+      <div class="step-circle">6</div>
+      <div class="step-label">Documents</div>
+    </div>
+    <div class="step-item" data-step="7">
+      <div class="step-circle">7</div>
+      <div class="step-label">Review</div>
+    </div>
+  </div>
+
+  <!-- Form Card -->
+  <div class="form-card" id="formCard">
+
+    <!-- ===== STEP 1: Personal Info ===== -->
+    <div class="form-step active" id="step-1">
+      <div class="form-card-header">
+        <div class="step-icon">👤</div>
+        <div>
+          <h2>Personal Information</h2>
+          <p>Basic identity details of the candidate</p>
+        </div>
+      </div>
+      <div class="form-body">
+        <div class="app-id-box">
+          <span class="app-id-icon">🆔</span>
+          <div>
+            <div class="app-id-text">Your Application ID</div>
+            <div class="app-id-value" id="appIdDisplay">—</div>
+          </div>
+        </div>
+
+        <div class="section-divider"><h3>Name Details</h3></div>
+        <div class="form-grid col-3">
+          <div class="field-group">
+            <label>First Name <span class="required">*</span></label>
+            <input type="text" id="firstName" placeholder="Enter first name">
+            <span class="field-error" id="err-firstName">First name is required</span>
+          </div>
+          <div class="field-group">
+            <label>Middle Name</label>
+            <input type="text" id="middleName" placeholder="Enter middle name">
+          </div>
+          <div class="field-group">
+            <label>Last Name <span class="required">*</span></label>
+            <input type="text" id="lastName" placeholder="Enter last name">
+            <span class="field-error" id="err-lastName">Last name is required</span>
+          </div>
+        </div>
+
+        <div class="section-divider"><h3>Basic Details</h3></div>
+        <div class="form-grid col-2">
+          <div class="field-group">
+            <label>Date of Birth <span class="required">*</span></label>
+            <input type="date" id="dob">
+            <span class="field-error" id="err-dob">Date of birth is required</span>
+          </div>
+          <div class="field-group">
+            <label>Gender <span class="required">*</span></label>
+            <select id="gender">
+              <option value="">Select gender</option>
+              <option>Male</option>
+              <option>Female</option>
+              <option>Other</option>
+              <option>Prefer not to say</option>
+            </select>
+            <span class="field-error" id="err-gender">Gender is required</span>
+          </div>
+          <div class="field-group">
+            <label>Marital Status <span class="required">*</span></label>
+            <select id="maritalStatus">
+              <option value="">Select status</option>
+              <option>Single</option>
+              <option>Married</option>
+              <option>Divorced</option>
+              <option>Widowed</option>
+            </select>
+            <span class="field-error" id="err-maritalStatus">Marital status is required</span>
+          </div>
+          <div class="field-group">
+            <label>Expected Joining Date <span class="required">*</span></label>
+            <input type="date" id="joiningDate">
+            <span class="field-error" id="err-joiningDate">Joining date is required</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-nav">
+        <span class="step-counter">Step 1 of 7</span>
+        <button class="btn btn-primary" onclick="nextStep(1)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ===== STEP 2: Contact Info ===== -->
+    <div class="form-step" id="step-2">
+      <div class="form-card-header">
+        <div class="step-icon">📍</div>
+        <div>
+          <h2>Contact Information</h2>
+          <p>Email, phone, and address details</p>
+        </div>
+      </div>
+      <div class="form-body">
+
+        <div class="section-divider"><h3>Communication</h3></div>
+        <div class="form-grid col-2">
+          <div class="field-group">
+            <label>Email Address <span class="required">*</span></label>
+            <input type="email" id="email" placeholder="name@example.com">
+            <span class="field-error" id="err-email">Valid email is required</span>
+          </div>
+          <div class="field-group">
+            <label>Mobile Number <span class="required">*</span></label>
+            <input type="tel" id="mobile" placeholder="+91 XXXXX XXXXX" maxlength="13">
+            <span class="field-error" id="err-mobile">Valid mobile number is required</span>
+          </div>
+        </div>
+
+        <div class="section-divider"><h3>Address</h3></div>
+        <div class="form-grid col-1">
+          <div class="field-group">
+            <label>Permanent Address <span class="required">*</span></label>
+            <textarea id="permanentAddress" placeholder="House No., Street, City, State, PIN Code"></textarea>
+            <span class="field-error" id="err-permanentAddress">Permanent address is required</span>
+          </div>
+          <div class="field-group">
+            <label>Current Address <span class="required">*</span></label>
+            <textarea id="currentAddress" placeholder="House No., Street, City, State, PIN Code"></textarea>
+            <span class="field-error" id="err-currentAddress">Current address is required</span>
+          </div>
+        </div>
+
+        <div class="section-divider"><h3>Emergency Contact</h3></div>
+        <div class="form-grid col-2">
+          <div class="field-group">
+            <label>Emergency Contact Name <span class="required">*</span></label>
+            <input type="text" id="emergencyName" placeholder="Full name">
+            <span class="field-error" id="err-emergencyName">Emergency contact name is required</span>
+          </div>
+          <div class="field-group">
+            <label>Emergency Contact Number <span class="required">*</span></label>
+            <input type="tel" id="emergencyNumber" placeholder="+91 XXXXX XXXXX" maxlength="13">
+            <span class="field-error" id="err-emergencyNumber">Valid emergency number is required</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-nav">
+        <button class="btn btn-secondary" onclick="prevStep(2)">← Back</button>
+        <span class="step-counter">Step 2 of 7</span>
+        <button class="btn btn-primary" onclick="nextStep(2)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ===== STEP 3: Identity ===== -->
+    <div class="form-step" id="step-3">
+      <div class="form-card-header">
+        <div class="step-icon">🪪</div>
+        <div>
+          <h2>Identity Documents</h2>
+          <p>Government issued identification numbers</p>
+        </div>
+      </div>
+      <div class="form-body">
+        <div class="section-divider"><h3>Government ID Numbers</h3></div>
+        <div class="form-grid col-2">
+          <div class="field-group">
+            <label>Aadhaar Number <span class="required">*</span></label>
+            <input type="text" id="aadhaar" placeholder="XXXX XXXX XXXX" maxlength="14">
+            <span class="field-error" id="err-aadhaar">Valid 12-digit Aadhaar is required</span>
+          </div>
+          <div class="field-group">
+            <label>PAN Number <span class="required">*</span></label>
+            <input type="text" id="pan" placeholder="ABCDE1234F" maxlength="10" style="text-transform:uppercase">
+            <span class="field-error" id="err-pan">Valid PAN number is required</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-nav">
+        <button class="btn btn-secondary" onclick="prevStep(3)">← Back</button>
+        <span class="step-counter">Step 3 of 7</span>
+        <button class="btn btn-primary" onclick="nextStep(3)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ===== STEP 4: Banking ===== -->
+    <div class="form-step" id="step-4">
+      <div class="form-card-header">
+        <div class="step-icon">🏦</div>
+        <div>
+          <h2>Banking Details</h2>
+          <p>Salary account and banking information</p>
+        </div>
+      </div>
+      <div class="form-body">
+        <div class="section-divider"><h3>Bank Account</h3></div>
+        <div class="form-grid col-2">
+          <div class="field-group">
+            <label>Account Holder Name <span class="required">*</span></label>
+            <input type="text" id="accountHolder" placeholder="As per bank records">
+            <span class="field-error" id="err-accountHolder">Account holder name is required</span>
+          </div>
+          <div class="field-group">
+            <label>Account Number <span class="required">*</span></label>
+            <input type="text" id="accountNumber" placeholder="Enter account number">
+            <span class="field-error" id="err-accountNumber">Account number is required</span>
+          </div>
+          <div class="field-group">
+            <label>Bank Name <span class="required">*</span></label>
+            <input type="text" id="bankName" placeholder="e.g. State Bank of India">
+            <span class="field-error" id="err-bankName">Bank name is required</span>
+          </div>
+          <div class="field-group">
+            <label>IFSC Code <span class="required">*</span></label>
+            <input type="text" id="ifsc" placeholder="SBIN0001234" maxlength="11" style="text-transform:uppercase">
+            <span class="field-error" id="err-ifsc">Valid IFSC code is required</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-nav">
+        <button class="btn btn-secondary" onclick="prevStep(4)">← Back</button>
+        <span class="step-counter">Step 4 of 7</span>
+        <button class="btn btn-primary" onclick="nextStep(4)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ===== STEP 5: Education & Employment ===== -->
+    <div class="form-step" id="step-5">
+      <div class="form-card-header">
+        <div class="step-icon">🎓</div>
+        <div>
+          <h2>Education & Employment</h2>
+          <p>Academic qualifications and prior work details</p>
+        </div>
+      </div>
+      <div class="form-body">
+        <div class="section-divider"><h3>Education</h3></div>
+        <div class="form-grid col-3">
+          <div class="field-group">
+            <label>Highest Qualification <span class="required">*</span></label>
+            <select id="qualification">
+              <option value="">Select qualification</option>
+              <option>10th / SSC</option>
+              <option>12th / HSC</option>
+              <option>Diploma</option>
+              <option>B.A.</option>
+              <option>B.Sc.</option>
+              <option>B.Com.</option>
+              <option>B.E. / B.Tech.</option>
+              <option>BBA</option>
+              <option>BCA</option>
+              <option>M.A.</option>
+              <option>M.Sc.</option>
+              <option>M.Com.</option>
+              <option>M.E. / M.Tech.</option>
+              <option>MBA</option>
+              <option>MCA</option>
+              <option>Ph.D.</option>
+              <option>Other</option>
+            </select>
+            <span class="field-error" id="err-qualification">Qualification is required</span>
+          </div>
+          <div class="field-group">
+            <label>University / Board <span class="required">*</span></label>
+            <input type="text" id="university" placeholder="University name">
+            <span class="field-error" id="err-university">University is required</span>
+          </div>
+          <div class="field-group">
+            <label>Passing Year <span class="required">*</span></label>
+            <input type="number" id="passingYear" placeholder="YYYY" min="1990" max="2030">
+            <span class="field-error" id="err-passingYear">Valid passing year is required</span>
+          </div>
+        </div>
+
+        <div class="section-divider"><h3>Previous Employment</h3></div>
+        <div class="form-grid col-3">
+          <div class="field-group">
+            <label>Last Designation</label>
+            <input type="text" id="lastDesignation" placeholder="e.g. Software Engineer">
+          </div>
+          <div class="field-group">
+            <label>Last CTC (₹ LPA)</label>
+            <input type="text" id="lastCTC" placeholder="e.g. 6.5 LPA">
+          </div>
+          <div class="field-group">
+            <label>Previous Company Name</label>
+            <input type="text" id="prevCompany" placeholder="Company name">
+          </div>
+        </div>
+      </div>
+      <div class="form-nav">
+        <button class="btn btn-secondary" onclick="prevStep(5)">← Back</button>
+        <span class="step-counter">Step 5 of 7</span>
+        <button class="btn btn-primary" onclick="nextStep(5)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ===== STEP 6: Documents ===== -->
+    <div class="form-step" id="step-6">
+      <div class="form-card-header">
+        <div class="step-icon">📎</div>
+        <div>
+          <h2>Document Uploads</h2>
+          <p>Please upload clear, legible copies of all required documents</p>
+        </div>
+      </div>
+      <div class="form-body">
+        <div class="section-divider"><h3>Required Documents</h3></div>
+        <div class="upload-grid">
+
+          <div>
+            <div class="upload-item-label">Aadhaar Card (PDF) <span class="required">*</span></div>
+            <div class="upload-zone" id="zone-aadhaar">
+              <input type="file" id="file-aadhaar" accept=".pdf" onchange="handleFileUpload(this,'zone-aadhaar','name-aadhaar')">
+              <div class="upload-icon">📄</div>
+              <div class="upload-label">Click to upload PDF</div>
+              <div class="upload-hint">PDF format only · Max 5MB</div>
+              <div class="upload-filename" id="name-aadhaar"></div>
+            </div>
+            <span class="field-error" id="err-file-aadhaar">Aadhaar card upload is required</span>
+          </div>
+
+          <div>
+            <div class="upload-item-label">PAN Card (PDF) <span class="required">*</span></div>
+            <div class="upload-zone" id="zone-pan">
+              <input type="file" id="file-pan" accept=".pdf" onchange="handleFileUpload(this,'zone-pan','name-pan')">
+              <div class="upload-icon">📄</div>
+              <div class="upload-label">Click to upload PDF</div>
+              <div class="upload-hint">PDF format only · Max 5MB</div>
+              <div class="upload-filename" id="name-pan"></div>
+            </div>
+            <span class="field-error" id="err-file-pan">PAN card upload is required</span>
+          </div>
+
+          <div>
+            <div class="upload-item-label">Photo <span class="required">*</span></div>
+            <div class="upload-zone" id="zone-photo">
+              <input type="file" id="file-photo" accept="image/*" onchange="handleFileUpload(this,'zone-photo','name-photo')">
+              <div class="upload-icon">🖼️</div>
+              <div class="upload-label">Click to upload photo</div>
+              <div class="upload-hint">JPG, PNG, WEBP only · Max 3MB</div>
+              <div class="upload-filename" id="name-photo"></div>
+            </div>
+            <span class="field-error" id="err-file-photo">Photo upload is required</span>
+          </div>
+
+          <div>
+            <div class="upload-item-label">Cancelled Cheque (PDF) <span class="required">*</span></div>
+            <div class="upload-zone" id="zone-cheque">
+              <input type="file" id="file-cheque" accept=".pdf" onchange="handleFileUpload(this,'zone-cheque','name-cheque')">
+              <div class="upload-icon">📄</div>
+              <div class="upload-label">Click to upload PDF</div>
+              <div class="upload-hint">PDF format only · Max 5MB</div>
+              <div class="upload-filename" id="name-cheque"></div>
+            </div>
+            <span class="field-error" id="err-file-cheque">Cancelled cheque upload is required</span>
+          </div>
+
+          <div>
+            <div class="upload-item-label">Resume (PDF) <span class="required">*</span></div>
+            <div class="upload-zone" id="zone-resume">
+              <input type="file" id="file-resume" accept=".pdf" onchange="handleFileUpload(this,'zone-resume','name-resume')">
+              <div class="upload-icon">📋</div>
+              <div class="upload-label">Click to upload PDF</div>
+              <div class="upload-hint">PDF format only · Max 10MB</div>
+              <div class="upload-filename" id="name-resume"></div>
+            </div>
+            <span class="field-error" id="err-file-resume">Resume upload is required</span>
+          </div>
+
+        </div>
+      </div>
+      <div class="form-nav">
+        <button class="btn btn-secondary" onclick="prevStep(6)">← Back</button>
+        <span class="step-counter">Step 6 of 7</span>
+        <button class="btn btn-primary" onclick="nextStep(6)">Review & Submit →</button>
+      </div>
+    </div>
+
+    <!-- ===== STEP 7: Review ===== -->
+    <div class="form-step" id="step-7">
+      <div class="form-card-header">
+        <div class="step-icon">✅</div>
+        <div>
+          <h2>Review & Submit</h2>
+          <p>Please verify all details before final submission</p>
+        </div>
+      </div>
+      <div class="form-body" id="reviewBody">
+        <!-- Populated by JS -->
+      </div>
+      <div class="form-nav">
+        <button class="btn btn-secondary" onclick="prevStep(7)">← Edit Details</button>
+        <span class="step-counter">Step 7 of 7</span>
+        <button class="btn btn-submit" id="submitBtn" onclick="submitForm()">
+          <span id="submitText">🚀 Submit Application</span>
+          <span class="spinner" id="submitSpinner"></span>
+        </button>
+      </div>
+    </div>
+
+  </div><!-- /form-card -->
+
+  <!-- Success Card -->
+  <div class="success-card" id="successCard">
+    <div class="success-icon">✓</div>
+    <h2>Application Submitted!</h2>
+    <p>Your onboarding information has been received successfully. Our HR team will reach out to you shortly.</p>
+    <div class="ref-id" id="refIdDisplay"></div>
+    <p style="margin-top:16px; font-size:13px; color:var(--text-muted);">A confirmation will be sent to <strong id="confirmEmail"></strong></p>
+  </div>
+
+</div><!-- /main-wrapper -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+  let currentStep = 1;
+  const totalSteps = 7;
+
+// Get Application ID from URL
+const urlParams = new URLSearchParams(window.location.search);
+
+const appId =
+    urlParams.get('applicationid') ||
+    urlParams.get('ApplicationId') ||
+    urlParams.get('id') ||
+    '';
+
+if (!appId) {
+    alert('Invalid onboarding link. Application ID is missing.');
+    document.body.innerHTML =
+        '<h2 style="padding:40px;text-align:center">Invalid Application Link</h2>';
+    throw new Error('Application ID missing');
+}
+
+document.getElementById('appIdDisplay').textContent = appId;
+
+  // ======= Navigation =======
+  function nextStep(from) {
+    if (!validateStep(from)) return;
+    goToStep(from + 1);
+  }
+  function prevStep(from) {
+    goToStep(from - 1);
+  }
+  function goToStep(n) {
+    document.getElementById('step-' + currentStep).classList.remove('active');
+    document.querySelector('[data-step="' + currentStep + '"]').classList.remove('active');
+    if (currentStep < n) {
+      document.querySelector('[data-step="' + currentStep + '"]').classList.add('completed');
+    } else {
+      document.querySelector('[data-step="' + (currentStep) + '"]').classList.remove('completed');
+    }
+    currentStep = n;
+    document.getElementById('step-' + currentStep).classList.add('active');
+    document.querySelector('[data-step="' + currentStep + '"]').classList.add('active');
+    if (currentStep === 7) buildReview();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ======= Validation =======
+  function validateStep(step) {
+    const checks = {
+      1: [
+        { id: 'firstName', check: v => v.trim().length > 0, err: 'err-firstName' },
+        { id: 'lastName',  check: v => v.trim().length > 0, err: 'err-lastName' },
+        { id: 'dob',       check: v => v !== '', err: 'err-dob' },
+        { id: 'gender',    check: v => v !== '', err: 'err-gender' },
+        { id: 'maritalStatus', check: v => v !== '', err: 'err-maritalStatus' },
+        { id: 'joiningDate', check: v => v !== '', err: 'err-joiningDate' },
+      ],
+      2: [
+        { id: 'email', check: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v), err: 'err-email' },
+        { id: 'mobile', check: v => /^[6-9]\d{9}$/.test(v.replace(/\D/g,'')), err: 'err-mobile' },
+        { id: 'permanentAddress', check: v => v.trim().length > 5, err: 'err-permanentAddress' },
+        { id: 'currentAddress', check: v => v.trim().length > 5, err: 'err-currentAddress' },
+        { id: 'emergencyName', check: v => v.trim().length > 0, err: 'err-emergencyName' },
+        { id: 'emergencyNumber', check: v => /^[6-9]\d{9}$/.test(v.replace(/\D/g,'')), err: 'err-emergencyNumber' },
+      ],
+      3: [
+        { id: 'aadhaar', check: v => /^\d{12}$/.test(v.replace(/\s/g,'')), err: 'err-aadhaar' },
+        { id: 'pan',     check: v => /^[A-Z]{5}[0-9]{4}[A-Z]$/.test(v.toUpperCase()), err: 'err-pan' },
+      ],
+      4: [
+        { id: 'accountHolder', check: v => v.trim().length > 0, err: 'err-accountHolder' },
+        { id: 'accountNumber', check: v => v.trim().length >= 8, err: 'err-accountNumber' },
+        { id: 'bankName', check: v => v.trim().length > 0, err: 'err-bankName' },
+        { id: 'ifsc',  check: v => /^[A-Z]{4}0[A-Z0-9]{6}$/.test(v.toUpperCase()), err: 'err-ifsc' },
+      ],
+      5: [
+        { id: 'qualification', check: v => v !== '', err: 'err-qualification' },
+        { id: 'university', check: v => v.trim().length > 0, err: 'err-university' },
+        { id: 'passingYear', check: v => +v >= 1990 && +v <= new Date().getFullYear()+1, err: 'err-passingYear' },
+      ],
+      6: [
+        { fileId: 'file-aadhaar', err: 'err-file-aadhaar' },
+        { fileId: 'file-pan',     err: 'err-file-pan' },
+        { fileId: 'file-photo',   err: 'err-file-photo' },
+        { fileId: 'file-cheque',  err: 'err-file-cheque' },
+        { fileId: 'file-resume',  err: 'err-file-resume' },
+      ],
+    };
+
+    let valid = true;
+    const rules = checks[step] || [];
+    rules.forEach(rule => {
+      let passed;
+      if (rule.fileId) {
+        const el = document.getElementById(rule.fileId);
+        passed = el && el.files && el.files.length > 0;
+      } else {
+        const el = document.getElementById(rule.id);
+        passed = el && rule.check(el.value);
+        if (el) el.classList.toggle('error', !passed);
+      }
+      const errEl = document.getElementById(rule.err);
+      if (errEl) errEl.classList.toggle('visible', !passed);
+      if (!passed) valid = false;
+    });
+    if (!valid) showToast('Please fill in all required fields correctly.', false);
+    return valid;
+  }
+
+  // ======= File Upload =======
+  function handleFileUpload(input, zoneId, nameId) {
+    const zone = document.getElementById(zoneId);
+    const nameEl = document.getElementById(nameId);
+    if (input.files && input.files[0]) {
+      zone.classList.add('has-file');
+      nameEl.textContent = '✓ ' + input.files[0].name;
+      // Clear any file error
+      const errKey = 'err-file-' + input.id.replace('file-','');
+      const errEl = document.getElementById(errKey);
+      if(errEl) errEl.classList.remove('visible');
+    }
+  }
+
+  // ======= Review Build =======
+  function getVal(id) {
+    const el = document.getElementById(id);
+    return el ? (el.value || '—') : '—';
+  }
+  function getFileName(id) {
+    const el = document.getElementById(id);
+    return (el && el.files && el.files[0]) ? el.files[0].name : '—';
+  }
+
+  function buildReview() {
+    const body = document.getElementById('reviewBody');
+    body.innerHTML = `
+      <div class="review-section">
+        <h3>Personal Information</h3>
+        <div class="review-grid">
+          <div class="review-row"><span class="r-label">Application ID</span><span class="r-value">${appId}</span></div>
+          <div class="review-row"><span class="r-label">Full Name</span><span class="r-value">${getVal('firstName')} ${getVal('middleName') !== '—' ? getVal('middleName') : ''} ${getVal('lastName')}</span></div>
+          <div class="review-row"><span class="r-label">Date of Birth</span><span class="r-value">${getVal('dob')}</span></div>
+          <div class="review-row"><span class="r-label">Gender</span><span class="r-value">${getVal('gender')}</span></div>
+          <div class="review-row"><span class="r-label">Marital Status</span><span class="r-value">${getVal('maritalStatus')}</span></div>
+          <div class="review-row"><span class="r-label">Expected Joining</span><span class="r-value">${getVal('joiningDate')}</span></div>
+        </div>
+      </div>
+      <div class="review-section">
+        <h3>Contact Information</h3>
+        <div class="review-grid">
+          <div class="review-row"><span class="r-label">Email</span><span class="r-value">${getVal('email')}</span></div>
+          <div class="review-row"><span class="r-label">Mobile</span><span class="r-value">${getVal('mobile')}</span></div>
+          <div class="review-row" style="grid-column:span 2"><span class="r-label">Permanent Address</span><span class="r-value">${getVal('permanentAddress')}</span></div>
+          <div class="review-row" style="grid-column:span 2"><span class="r-label">Current Address</span><span class="r-value">${getVal('currentAddress')}</span></div>
+          <div class="review-row"><span class="r-label">Emergency Contact</span><span class="r-value">${getVal('emergencyName')}</span></div>
+          <div class="review-row"><span class="r-label">Emergency Number</span><span class="r-value">${getVal('emergencyNumber')}</span></div>
+        </div>
+      </div>
+      <div class="review-section">
+        <h3>Identity & Banking</h3>
+        <div class="review-grid">
+          <div class="review-row"><span class="r-label">Aadhaar Number</span><span class="r-value">${maskMiddle(getVal('aadhaar'))}</span></div>
+          <div class="review-row"><span class="r-label">PAN Number</span><span class="r-value">${getVal('pan').toUpperCase()}</span></div>
+          <div class="review-row"><span class="r-label">Account Holder</span><span class="r-value">${getVal('accountHolder')}</span></div>
+          <div class="review-row"><span class="r-label">Account Number</span><span class="r-value">${maskMiddle(getVal('accountNumber'))}</span></div>
+          <div class="review-row"><span class="r-label">Bank Name</span><span class="r-value">${getVal('bankName')}</span></div>
+          <div class="review-row"><span class="r-label">IFSC Code</span><span class="r-value">${getVal('ifsc').toUpperCase()}</span></div>
+        </div>
+      </div>
+      <div class="review-section">
+        <h3>Education & Employment</h3>
+        <div class="review-grid">
+          <div class="review-row"><span class="r-label">Qualification</span><span class="r-value">${getVal('qualification')}</span></div>
+          <div class="review-row"><span class="r-label">University</span><span class="r-value">${getVal('university')}</span></div>
+          <div class="review-row"><span class="r-label">Passing Year</span><span class="r-value">${getVal('passingYear')}</span></div>
+          <div class="review-row"><span class="r-label">Last Designation</span><span class="r-value">${getVal('lastDesignation')}</span></div>
+          <div class="review-row"><span class="r-label">Last CTC</span><span class="r-value">${getVal('lastCTC')}</span></div>
+          <div class="review-row"><span class="r-label">Previous Company</span><span class="r-value">${getVal('prevCompany')}</span></div>
+        </div>
+      </div>
+      <div class="review-section">
+        <h3>Uploaded Documents</h3>
+        <div>
+          <span class="file-badge">📄 ${getFileName('file-aadhaar')}</span>
+          <span class="file-badge">📄 ${getFileName('file-pan')}</span>
+          <span class="file-badge">🖼️ ${getFileName('file-photo')}</span>
+          <span class="file-badge">📄 ${getFileName('file-cheque')}</span>
+          <span class="file-badge">📋 ${getFileName('file-resume')}</span>
+        </div>
+      </div>
+    `;
+  }
+
+  function maskMiddle(str) {
+    if (!str || str === '—') return '—';
+    const s = str.replace(/\s/g, '');
+    if (s.length <= 4) return s;
+    return s.slice(0,2) + '*'.repeat(s.length-4) + s.slice(-2);
+  }
+
+  // ======= Submission =======
+  async function submitForm() {
+    const btn = document.getElementById('submitBtn');
+    const text = document.getElementById('submitText');
+    const spinner = document.getElementById('submitSpinner');
+
+    btn.disabled = true;
+    text.style.display = 'none';
+    spinner.style.display = 'inline-block';
+
+    // Build payload
+    const payload = buildPayload();
+
+    // Convert files to base64
+    try {
+      payload.attachments = await collectAttachments();
+    } catch(e) {
+      payload.attachments = {};
+    }
+
+    // YOUR POWER AUTOMATE URL HERE
+    const POWER_AUTOMATE_URL = 'https://2ee217396b6fe0ffb476c1e33c828f.d4.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/1ca84c88bf594f229c61f45df4badb4a/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=sFEwhBK3ucckDmNIvkCz2VVTEHbhFwhorCTHv2Jzrp4';
+
+    try {
+      const resp = await fetch(POWER_AUTOMATE_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (resp.ok || resp.status === 202) {
+        showSuccess();
+      } else {
+        throw new Error('HTTP ' + resp.status);
+      }
+    } catch(err) {
+      // Demo mode: show success if URL is placeholder
+      if (POWER_AUTOMATE_URL.includes('YOUR_WORKFLOW_ID')) {
+        showSuccess(); // Remove this in production
+      } else {
+        btn.disabled = false;
+        text.style.display = '';
+        spinner.style.display = 'none';
+        showToast('Submission failed. Please try again.', false);
+      }
+    }
+  }
+
+  function buildPayload() {
+    return {
+      applicationId: appId,
+      submittedAt: new Date().toISOString(),
+      personalInfo: {
+        firstName: getVal('firstName'),
+        middleName: getVal('middleName'),
+        lastName: getVal('lastName'),
+        dateOfBirth: getVal('dob'),
+        gender: getVal('gender'),
+        maritalStatus: getVal('maritalStatus'),
+        expectedJoiningDate: getVal('joiningDate')
+      },
+      contactInfo: {
+        emailAddress: getVal('email'),
+        mobileNumber: getVal('mobile'),
+        permanentAddress: getVal('permanentAddress'),
+        currentAddress: getVal('currentAddress'),
+        emergencyContactName: getVal('emergencyName'),
+        emergencyContactNumber: getVal('emergencyNumber')
+      },
+      identityInfo: {
+        aadhaarNumber: getVal('aadhaar').replace(/\s/g,''),
+        panNumber: getVal('pan').toUpperCase()
+      },
+      bankingInfo: {
+        accountHolderName: getVal('accountHolder'),
+        accountNumber: getVal('accountNumber'),
+        bankName: getVal('bankName'),
+        ifscCode: getVal('ifsc').toUpperCase()
+      },
+      educationInfo: {
+        highestQualification: getVal('qualification'),
+        university: getVal('university'),
+        passingYear: getVal('passingYear')
+      },
+      employmentInfo: {
+        lastDesignation: getVal('lastDesignation'),
+        lastCTC: getVal('lastCTC'),
+        previousCompanyName: getVal('prevCompany')
+      }
+    };
+  }
+
+  async function fileToBase64(file) {
+    return new Promise((res, rej) => {
+      const reader = new FileReader();
+      reader.onload = e => res(e.target.result.split(',')[1]);
+      reader.onerror = rej;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function collectAttachments() {
+    const files = {
+      'file-aadhaar': 'aadhaarCard',
+      'file-pan': 'panCard',
+      'file-photo': 'photo',
+      'file-cheque': 'cancelledCheque',
+      'file-resume': 'resume'
+    };
+    const result = {};
+    for (const [inputId, key] of Object.entries(files)) {
+      const el = document.getElementById(inputId);
+      if (el && el.files && el.files[0]) {
+        result[key] = {
+          fileName: el.files[0].name,
+          mimeType: el.files[0].type,
+          fileSize: el.files[0].size,
+          base64Content: await fileToBase64(el.files[0])
+        };
+      }
+    }
+    return result;
+  }
+
+  function showSuccess() {
+    document.getElementById('formCard').style.display = 'none';
+    document.getElementById('stepper').style.display = 'none';
+    const sc = document.getElementById('successCard');
+    sc.classList.add('active');
+    document.getElementById('refIdDisplay').textContent = '🔖 Reference ID: ' + appId;
+    document.getElementById('confirmEmail').textContent = getVal('email');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ======= Toast =======
+  function showToast(msg, success = false) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast' + (success ? ' success' : '') + ' show';
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  // Auto-format Aadhaar input
+  document.getElementById('aadhaar').addEventListener('input', function() {
+    let v = this.value.replace(/\D/g,'').substring(0,12);
+    this.value = v.replace(/(\d{4})(?=\d)/g,'$1 ').trim();
+  });
+  document.getElementById('pan').addEventListener('input', function() {
+    this.value = this.value.toUpperCase();
+  });
+  document.getElementById('ifsc').addEventListener('input', function() {
+    this.value = this.value.toUpperCase();
+  });
+</script>
+</body>
+</html>
